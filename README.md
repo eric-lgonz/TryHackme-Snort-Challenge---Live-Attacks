@@ -12,13 +12,13 @@ Note: There are two VMs attached to this challenge. Each task has dedicated VMs.
 
 Now that we understand the context of the room, let's complete this task and move on to Task 2.
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%201%20-%201.png">
 
 <h1>Task 2 - Scenario 1 | Brute Force</h1>
 
 Let's start by powering on our VM in the top right corner.
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%201%20-%202.png">
 
 <h2>Context Behind Scenario 1</h2>
 
@@ -82,38 +82,38 @@ Here are a few points to remember:
 
 On our VM, open a terminal by pressing on the terminal icon:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%201.png">
 
 Before we can stop the attack with Snort rules, we first have to know what kind of attack we are being hit with. Let's start Snort in packet sniffer mode with the <code>sudo snort -v -l .</code>. This will display the TCP/IP output in the console and will also log the packets to a file in our current directory:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%202.png">
 
 Let this run for about 10 seconds, then stop Snort by hitting <code>Ctrl+C</code>.
 
 If we do <code>ls</code>, we can see that a snort log file was created in our current directory:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%203.png">
 
 Let's now read this log file by using <code>sudo snort -r snort.log.1743829415 -X</code>.
 
 After this runs, we can scroll up and view the packets:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%204.png">
 
 Something I noticed in the packets is that there was a lot of traffic on ports 80 and 22. Port 80 is used for http traffic, and port 22 is used for ssh, which is a tool used to remotely login to systems. Let's look to see if this port 22 traffic is indeed ssh by searching for it with grep: <code>sudo snort -r snort.log.1743829415 -X | grep "ssh"</code>:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%205.png">
 
 We can see that ssh pops up many times, and this could very well be the source of the attack, as someone is repeatedly trying to login to another machine. Let's write a general rule that stops ssh traffic from traversing the network.
 
 There is a local rules file in the snort directory, so we can edit that with <code>sudo gedit /etc/snort/rules/local.rules</code> and add the following rule:
 
-_insert image_
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%206.png">
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%207.png">
 
 Once you have added the rule, save and exit the file. Then enter the following command to run Snort again, which should filter out the ssh traffic: <code>sudo snort -c /etc/snort/snort.conf -q -Q --daq afpacket -i eth0:eth1 -A full</code>. This command runs snort in IPS mode, allowing it to take action on our rule by dropping the packets that match the rule criteria. After running this command for 20 or so seconds, the flag will appear on the desktop:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%202%20-%208.png">
 
 Now for the questions:
 
@@ -127,7 +127,7 @@ What is the used protocol/port in the attack? For this question, we need to cons
 
 Let's start by powering on our VM in the top right corner (make sure you close out of the other VM first).
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%201.png">
 
 <h2>Context Behind Scenario 2</h2>
 
@@ -191,40 +191,40 @@ Here are a few points to remember:
 
 On our VM, open a terminal by pressing on the terminal icon:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%202.png">
 
 Similar to the previous task, let's first start by trying to identify anything suspicious about the network traffic. Let's start Snort in packet sniffer mode with the <code>sudo snort -v -l .</code>. This will display the TCP/IP output in the console and will also log the packets to a file in our current directory:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%203.png">
 
 Let this run for about 10 seconds, then stop Snort by hitting <code>Ctrl+C</code>.
 
 Once again, if we do <code>ls</code>, we can see that a snort log file was created in our current directory:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%204.png">
 
 Let's now read this log file by using <code>sudo snort -r snort.log.1743841351 -X</code>.
 
 After this runs, we can scroll up and view the packets:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%205.png">
 
 We see that there is a lot of traffic using ports 80 and 4444. We know that port 80 is normally used for http traffic, but what is port 4444 normally used for?
 
 We can do a quick google search to find out:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%206.png">
 
 It seems that this port is associated with a few different kinds of exploits, and another site says that the Metasploit framework commonly uses port 4444. Let's see if this is the source of our attack by making a rule to filter out this traffic.
 
-Enter the command <code> sudo gedit /etc/snort/rules/local.rules</code> and enter the following rule to drop traffic on port 4444:
+Enter the command <code>sudo gedit /etc/snort/rules/local.rules</code> and enter the following rule to drop traffic on port 4444:
 
-_insert image_
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%207.png">
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%208.png">
 
 Save and exit the file, and test the rule by running the following command in the terminal: <code>sudo snort -c /etc/snort/snort.conf -q -Q --daq afpacket -i eth0:eth1 -A full</code>. This command runs snort in IPS mode, allowing it to take action on our rule by dropping the packets that match the rule criteria. After running this command for 20 or so seconds, the flag will appear on the desktop, in a similar manner to the last task:
 
-_insert image_
+<img src="https://github.com/eric-lgonz/TryHackme-Snort-Challenge---Live-Attacks/blob/main/assets/Task%203%20-%209.png">
 
 Now for the questions:
 
@@ -240,4 +240,4 @@ And that's it!
 
 In this room, you used Snort to recognize and defend against different kinds of live attacks using custom written rules.
 
-For more information about Snort, I encourage you to check out my Network Traffic Analysis and NIDS/NIPS Configuration project, where I demonstrate how to configure and use Snort on a home network.
+For more information about Snort, I encourage you to check out my [Network Traffic Analysis and NIDS/NIPS Configuration](https://github.com/eric-lgonz/Network-Traffic-Analysis-and-NIDS-NIPS-Configuration) project, where I demonstrate how to configure and use Snort on a home network.
