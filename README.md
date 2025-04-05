@@ -1,6 +1,6 @@
 # TryHackme-Snort-Challenge---Live-Attacks
 
-This is a writeup for TryHackme's "Snort Challenge - Live Attacks" room. This room uses Snort 2.9.7.
+This is a writeup for TryHackme's "Snort Challenge - Live Attacks" room. This room uses Snort version 2.9.7.
 
 <h1>Task 1 - Introduction</h1>
 
@@ -111,7 +111,7 @@ There is a local rules file in the snort directory, so we can edit that with <co
 _insert image_
 _insert image_
 
-Once you have added the rule, save and exit the file. Then enter the following command to run snort again, which should filter out the ssh traffic: <code>sudo snort -c /etc/snort/snort.conf -q -Q --daq afpacket -i eth0:eth1 -A full</code>. This command runs snort in IPS mode, allowing it to take action on our rule by dropping the packets that match the rule criteria. After running this command for 20 or so seconds, the flag will appear on the desktop:
+Once you have added the rule, save and exit the file. Then enter the following command to run Snort again, which should filter out the ssh traffic: <code>sudo snort -c /etc/snort/snort.conf -q -Q --daq afpacket -i eth0:eth1 -A full</code>. This command runs snort in IPS mode, allowing it to take action on our rule by dropping the packets that match the rule criteria. After running this command for 20 or so seconds, the flag will appear on the desktop:
 
 _insert image_
 
@@ -187,11 +187,57 @@ Here are a few points to remember:
 - Write the correct rule and run the Snort in IPS "-A full" mode.
 - Block the traffic at least for a minute and then the flag file will appear on your desktop.
 
-<h2>Scenario 1 Walkthrough</h2>
+<h2>Scenario 2 Walkthrough</h2>
 
 On our VM, open a terminal by pressing on the terminal icon:
 
 _insert image_
 
+Similar to the previous task, let's first start by trying to identify anything suspicious about the network traffic. Let's start Snort in packet sniffer mode with the <code>sudo snort -v -l .</code>. This will display the TCP/IP output in the console and will also log the packets to a file in our current directory:
 
+_insert image_
 
+Let this run for about 10 seconds, then stop Snort by hitting <code>Ctrl+C</code>.
+
+Once again, if we do <code>ls</code>, we can see that a snort log file was created in our current directory:
+
+_insert image_
+
+Let's now read this log file by using <code>sudo snort -r snort.log.1743841351 -X</code>.
+
+After this runs, we can scroll up and view the packets:
+
+_insert image_
+
+We see that there is a lot of traffic using ports 80 and 4444. We know that port 80 is normally used for http traffic, but what is port 4444 normally used for?
+
+We can do a quick google search to find out:
+
+_insert image_
+
+It seems that this port is associated with a few different kinds of exploits, and another site says that the Metasploit framework commonly uses port 4444. Let's see if this is the source of our attack by making a rule to filter out this traffic.
+
+Enter the command <code> sudo gedit /etc/snort/rules/local.rules</code> and enter the following rule to drop traffic on port 4444:
+
+_insert image_
+_insert image_
+
+Save and exit the file, and test the rule by running the following command in the terminal: <code>sudo snort -c /etc/snort/snort.conf -q -Q --daq afpacket -i eth0:eth1 -A full</code>. This command runs snort in IPS mode, allowing it to take action on our rule by dropping the packets that match the rule criteria. After running this command for 20 or so seconds, the flag will appear on the desktop, in a similar manner to the last task:
+
+_insert image_
+
+Now for the questions:
+
+We were tasked to "Stop the attack and get the flag (which will appear on your Desktop)". The flag we found can be copy and pasted into this box and is the answer to this question.
+
+What is the used protocol/port in the attack? We found that the attack was using tcp over port 4444, making our answer TCP/4444.
+
+Which tool is highly associated with this specific port number? For this question, we can refer back to our google search, which told us that Metasploit is associated with port 4444. This means that our answer is Metasploit.
+
+<h1>Conclusion</h1>
+
+And that's it!
+
+In this room, you used Snort to recognize and defend against different kinds of live attacks using custom written rules.
+
+For more information about Snort, I encourage you to check out my NIDS/NIPS Configuration where I demonstrate how to configure and use Snort on your home network.
