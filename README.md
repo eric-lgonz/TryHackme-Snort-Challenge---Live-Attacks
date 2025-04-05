@@ -111,12 +111,19 @@ There is a local rules file in the snort directory, so we can edit that with <co
 _insert image_
 _insert image_
 
-Once you have the image added
+Once you have added the rule, save and exit the file. Then enter the following command to run snort again, which should filter out the ssh traffic: <code>sudo snort -c /etc/snort/snort.conf -q -Q --daq afpacket -i eth0:eth1 -A full</code>. This command runs snort in IPS mode, allowing it to take action on our rule by dropping the packets that match the rule criteria. After running this command for 20 or so seconds, the flag will appear on the desktop:
 
+_insert image_
 
+Now for the questions:
 
+We were tasked to "Stop the attack and get the flag (which will appear on your Desktop)". The flag we found can be copy and pasted into this box and is the answer to this question.
 
+What is the name of the service under attack? We found that the attack was using ssh, which is our answer for this question.
 
+What is the used protocol/port in the attack? For this question, we need to consider the protocol and port that ssh uses. Looking at our rule, we know that ssh uses TCP on port 22, so TCP/22 is the answer.
+
+<h1>Task 3 - Scenario 2 | Reverse-Shell</h1>
 
 
 
