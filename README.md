@@ -106,6 +106,13 @@ _insert image_
 
 We can see that ssh pops up many times, and this could very well be the source of the attack, as someone is repeatedly trying to login to another machine. Let's write a general rule that stops ssh traffic from traversing the network.
 
+There is a local rules file in the snort directory, so we can edit that with <code>sudo gedit /etc/snort/rules/local.rules</code> and add the following rule:
+
+_insert image_
+_insert image_
+
+Once you have the image added
+
 
 
 
