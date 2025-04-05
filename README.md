@@ -129,7 +129,7 @@ Let's start by powering on our VM in the top right corner (make sure you close o
 
 _insert image_
 
-<h2>Context Behind Scenario 1</h2>
+<h2>Context Behind Scenario 2</h2>
 
 [+] THE NARRATOR
 
@@ -240,4 +240,4 @@ And that's it!
 
 In this room, you used Snort to recognize and defend against different kinds of live attacks using custom written rules.
 
-For more information about Snort, I encourage you to check out my NIDS/NIPS Configuration where I demonstrate how to configure and use Snort on your home network.
+For more information about Snort, I encourage you to check out my Network Traffic Analysis and NIDS/NIPS Configuration project, where I demonstrate how to configure and use Snort on a home network.
